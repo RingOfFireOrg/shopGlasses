@@ -6,9 +6,21 @@
 #define PIN 8
 
 // This code started from the AdaFruit NeoPixel sample code. The stuff that is written well came from there.
-//   Code that looks a little wonky is probably bent from the good start by Lazy-R-us to fit his needs.
-//   Code that looks like bailing wire and duct tape probably was written by Lazy-R-us (several times) until the
+//   Code that looks a little wonky is probably bent from the good start by Glen to fit his needs.
+//   Code that looks like bailing wire and duct tape probably was written by Glen (several times) until the
 //     compiler gave up and did what I wanted it to just to get me to go away.
+
+// **********************    IMPORTANT!!  *************************
+//
+// Since the State variable is read as a byte, I have taken over Pin 0 and 1.
+//  You don't care, except the Near selector switch is grounding out the RX or TX
+//   unless it is in HARD TOOLS position. You will get an error when trying to load
+//   code unless you put that switchi in HARD TOOLS -or- disconnect the selector
+//   switch from the header pins.
+//
+//  Sorry.
+//
+// ************** Glen. ***********************************
 
 // Parameter 1 = number of pixels in strip
 // Parameter 2 = Arduino pin number (most are valid)
@@ -27,11 +39,9 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(45, PIN, NEO_GRB + NEO_KHZ400);
 
 // Define some color codes by name to make it easier to call and revise later on
 uint32_t Red = strip.Color(255, 0, 0);
-uint32_t DimRed = strip.Color(5, 0, 0);
 uint32_t Green = strip.Color(0,0,255);
-uint32_t DimGreen = strip.Color(0,0,5);
 uint32_t Yellow = strip.Color(255, 0, 90);
-uint32_t DimYellow = strip.Color(25, 0, 10);
+uint32_t Off = strip.Color(0, 0, 0);
 
 
 // The State variable is defined thus:
@@ -91,7 +101,7 @@ void loop() {
     // The ESTOP button has been pushed, lights go red, don't exit this state until ESTOP is high and 
 	//  NO Tools are selected in both areas.
 	while (State != 246){
-	  colorWipe(strip.Color(255, 0, 0), 5); // Red
+	  AllRed();
 	  State = PIND;	//Read the inputs so we have a chance to exit
 	}
   }
@@ -147,7 +157,10 @@ void loop() {
 
 
 	default:		//Should only get here during state transistions - Clear LEDS
-      colorWipe(strip.Color(0, 0, 0), 5);    
+      colorWipe(strip.Color(0, 0, 0), 5);
+	  strip.setPixelColor(0, Red);
+	  strip.show();
+
     }  
   }
 
@@ -159,24 +172,80 @@ void colorSet(uint32_t c, uint8_t Start, uint8_t End ) {
   strip.show();
 }
 
+// set all indicators to red (E-stop)
+void AllRed( ) {
+	  strip.setPixelColor(8, Red);
+	  strip.setPixelColor(7, Red);
+	  strip.setPixelColor(6, Red);
+	  strip.setPixelColor(5, Off);
+	  strip.setPixelColor(4, Off);
+	  strip.setPixelColor(3, Off);
+	  strip.setPixelColor(2, Off);
+	  strip.setPixelColor(1, Off);
+	  strip.setPixelColor(0, Off);
+	  
+	  strip.setPixelColor(44, Red);
+	  strip.setPixelColor(43, Red);
+	  strip.setPixelColor(42, Red);
+	  strip.setPixelColor(41, Off);
+	  strip.setPixelColor(40, Off);
+	  strip.setPixelColor(39, Off);
+	  strip.setPixelColor(38, Off);
+	  strip.setPixelColor(37, Off);
+	  strip.setPixelColor(36, Off);
+	  
+	  strip.setPixelColor(17, Red);
+	  strip.setPixelColor(16, Red);
+	  strip.setPixelColor(15, Red);
+	  strip.setPixelColor(14, Off);
+	  strip.setPixelColor(13, Off);
+	  strip.setPixelColor(12, Off);
+	  strip.setPixelColor(11, Off);
+	  strip.setPixelColor(10, Off);
+	  strip.setPixelColor( 9, Off);
+	  
+	  strip.setPixelColor(26, Red);
+	  strip.setPixelColor(25, Red);
+	  strip.setPixelColor(24, Red);
+	  strip.setPixelColor(23, Off);
+	  strip.setPixelColor(22, Off);
+	  strip.setPixelColor(21, Off);
+	  strip.setPixelColor(20, Off);
+	  strip.setPixelColor(19, Off);
+	  strip.setPixelColor(18, Off);
+
+	  strip.setPixelColor(35, Red);
+	  strip.setPixelColor(34, Red);
+	  strip.setPixelColor(33, Red);
+	  strip.setPixelColor(32, Off);
+	  strip.setPixelColor(31, Off);
+	  strip.setPixelColor(30, Off);
+	  strip.setPixelColor(29, Off);
+	  strip.setPixelColor(28, Off);
+	  strip.setPixelColor(27, Off);
+
+	  
+	  strip.show();
+}
+
 // set the Near indicators to Green (no tools)
 void NearGreen( ) {
-	  strip.setPixelColor(8, DimRed);
-	  strip.setPixelColor(7, DimRed);
-	  strip.setPixelColor(6, DimRed);
-	  strip.setPixelColor(5, DimYellow);
-	  strip.setPixelColor(4, DimYellow);
-	  strip.setPixelColor(3, DimYellow);
+	  strip.setPixelColor(8, Off);
+	  strip.setPixelColor(7, Off);
+	  strip.setPixelColor(6, Off);
+	  strip.setPixelColor(5, Off);
+	  strip.setPixelColor(4, Off);
+	  strip.setPixelColor(3, Off);
 	  strip.setPixelColor(2, Green);
 	  strip.setPixelColor(1, Green);
 	  strip.setPixelColor(0, Green);
 	  
-	  strip.setPixelColor(44, DimRed);
-	  strip.setPixelColor(43, DimRed);
-	  strip.setPixelColor(42, DimRed);
-	  strip.setPixelColor(41, DimYellow);
-	  strip.setPixelColor(40, DimYellow);
-	  strip.setPixelColor(39, DimYellow);
+	  strip.setPixelColor(44, Off);
+	  strip.setPixelColor(43, Off);
+	  strip.setPixelColor(42, Off);
+	  strip.setPixelColor(41, Off);
+	  strip.setPixelColor(40, Off);
+	  strip.setPixelColor(39, Off);
 	  strip.setPixelColor(38, Green);
 	  strip.setPixelColor(37, Green);
 	  strip.setPixelColor(36, Green);
@@ -186,57 +255,57 @@ void NearGreen( ) {
 
 // set the Near indicators to Yellow (Glasses required)
 void NearYellow( ) {
-	  strip.setPixelColor(8, DimRed);
-	  strip.setPixelColor(7, DimRed);
-	  strip.setPixelColor(6, DimRed);
+	  strip.setPixelColor(8, Off);
+	  strip.setPixelColor(7, Off);
+	  strip.setPixelColor(6, Off);
 	  strip.setPixelColor(5, Yellow);
 	  strip.setPixelColor(4, Yellow);
 	  strip.setPixelColor(3, Yellow);
-	  strip.setPixelColor(2, DimGreen);
-	  strip.setPixelColor(1, DimGreen);
-	  strip.setPixelColor(0, DimGreen);
+	  strip.setPixelColor(2, Off);
+	  strip.setPixelColor(1, Off);
+	  strip.setPixelColor(0, Off);
 	  
-	  strip.setPixelColor(44, DimRed);
-	  strip.setPixelColor(43, DimRed);
-	  strip.setPixelColor(42, DimRed);
+	  strip.setPixelColor(44, Off);
+	  strip.setPixelColor(43, Off);
+	  strip.setPixelColor(42, Off);
 	  strip.setPixelColor(41, Yellow);
 	  strip.setPixelColor(40, Yellow);
 	  strip.setPixelColor(39, Yellow);
-	  strip.setPixelColor(38, DimGreen);
-	  strip.setPixelColor(37, DimGreen);
-	  strip.setPixelColor(36, DimGreen);
+	  strip.setPixelColor(38, Off);
+	  strip.setPixelColor(37, Off);
+	  strip.setPixelColor(36, Off);
 	  
 	  strip.show();
 }
  
 // set the Far indicators to Green (no tools)
 void FarGreen( ) {
-	  strip.setPixelColor(17, DimRed);
-	  strip.setPixelColor(16, DimRed);
-	  strip.setPixelColor(15, DimRed);
-	  strip.setPixelColor(14, DimYellow);
-	  strip.setPixelColor(13, DimYellow);
-	  strip.setPixelColor(12, DimYellow);
+	  strip.setPixelColor(17, Off);
+	  strip.setPixelColor(16, Off);
+	  strip.setPixelColor(15, Off);
+	  strip.setPixelColor(14, Off);
+	  strip.setPixelColor(13, Off);
+	  strip.setPixelColor(12, Off);
 	  strip.setPixelColor(11, Green);
 	  strip.setPixelColor(10, Green);
 	  strip.setPixelColor( 9, Green);
 	  
-	  strip.setPixelColor(26, DimRed);
-	  strip.setPixelColor(25, DimRed);
-	  strip.setPixelColor(24, DimRed);
-	  strip.setPixelColor(23, DimYellow);
-	  strip.setPixelColor(22, DimYellow);
-	  strip.setPixelColor(21, DimYellow);
+	  strip.setPixelColor(26, Off);
+	  strip.setPixelColor(25, Off);
+	  strip.setPixelColor(24, Off);
+	  strip.setPixelColor(23, Off);
+	  strip.setPixelColor(22, Off);
+	  strip.setPixelColor(21, Off);
 	  strip.setPixelColor(20, Green);
 	  strip.setPixelColor(19, Green);
 	  strip.setPixelColor(18, Green);
 
-	  strip.setPixelColor(35, DimRed);
-	  strip.setPixelColor(34, DimRed);
-	  strip.setPixelColor(33, DimRed);
-	  strip.setPixelColor(32, DimYellow);
-	  strip.setPixelColor(31, DimYellow);
-	  strip.setPixelColor(30, DimYellow);
+	  strip.setPixelColor(35, Off);
+	  strip.setPixelColor(34, Off);
+	  strip.setPixelColor(33, Off);
+	  strip.setPixelColor(32, Off);
+	  strip.setPixelColor(31, Off);
+	  strip.setPixelColor(30, Off);
 	  strip.setPixelColor(29, Green);
 	  strip.setPixelColor(28, Green);
 	  strip.setPixelColor(27, Green);
@@ -246,35 +315,35 @@ void FarGreen( ) {
 
 // set the Far indicators to Yellow (Glasses required)
 void FarYellow( ) {
-	  strip.setPixelColor(17, DimRed);
-	  strip.setPixelColor(16, DimRed);
-	  strip.setPixelColor(15, DimRed);
+	  strip.setPixelColor(17, Off);
+	  strip.setPixelColor(16, Off);
+	  strip.setPixelColor(15, Off);
 	  strip.setPixelColor(14, Yellow);
 	  strip.setPixelColor(13, Yellow);
 	  strip.setPixelColor(12, Yellow);
-	  strip.setPixelColor(11, DimGreen);
-	  strip.setPixelColor(10, DimGreen);
-	  strip.setPixelColor( 9, DimGreen);
+	  strip.setPixelColor(11, Off);
+	  strip.setPixelColor(10, Off);
+	  strip.setPixelColor( 9, Off);
 	                      
-	  strip.setPixelColor(26, DimRed);
-	  strip.setPixelColor(25, DimRed);
-	  strip.setPixelColor(24, DimRed);
+	  strip.setPixelColor(26, Off);
+	  strip.setPixelColor(25, Off);
+	  strip.setPixelColor(24, Off);
 	  strip.setPixelColor(23, Yellow);
 	  strip.setPixelColor(22, Yellow);
 	  strip.setPixelColor(21, Yellow);
-	  strip.setPixelColor(20, DimGreen);
-	  strip.setPixelColor(19, DimGreen);
-	  strip.setPixelColor(18, DimGreen);
+	  strip.setPixelColor(20, Off);
+	  strip.setPixelColor(19, Off);
+	  strip.setPixelColor(18, Off);
                           
-	  strip.setPixelColor(35, DimRed);
-	  strip.setPixelColor(34, DimRed);
-	  strip.setPixelColor(33, DimRed);
+	  strip.setPixelColor(35, Off);
+	  strip.setPixelColor(34, Off);
+	  strip.setPixelColor(33, Off);
 	  strip.setPixelColor(32, Yellow);
 	  strip.setPixelColor(31, Yellow);
 	  strip.setPixelColor(30, Yellow);
-	  strip.setPixelColor(29, DimGreen);
-	  strip.setPixelColor(28, DimGreen);
-	  strip.setPixelColor(27, DimGreen);
+	  strip.setPixelColor(29, Off);
+	  strip.setPixelColor(28, Off);
+	  strip.setPixelColor(27, Off);
 
 	  strip.show();
 }
