@@ -61,6 +61,9 @@ uint32_t Off = strip.Color(0, 0, 0);
 //   with a set of three pixels for each color (Red, Yellow, Green). To keep wiring simpler, and the colors in the
 //   right order, the 
 
+//   New code for the BFF space August 14, 2021. With only one shop area, we are using the two controlers in two locations to
+//     control all the LED's at once rather than two separate independant spaces. 
+
   byte State = PIND;
   int ESTOP = 6;
 
@@ -111,8 +114,9 @@ void loop() {
 	  NearGreen();
     break;
 
-	case 245:		//No E-STOP, FAR No tools, NEAR SOFT Tools: output FAR YELLOW, NEAR YELLOW
-	  FarGreen();
+	case 245:		//No E-STOP, FAR No tools, NEAR SOFT Tools: output FAR GREEN, NEAR YELLOW **** Revised 8/14/21 for single build space
+	  //FarGreen();
+	  FarYellow();
 	  NearYellow();
     break;
 
@@ -121,9 +125,10 @@ void loop() {
 	  NearYellow();
     break;
 
-	case 238:		//No E-STOP, FAR SOFT tools, NEAR N0 Tools: output FAR YELLOW, NEAR Green
+	case 238:		//No E-STOP, FAR SOFT tools, NEAR N0 Tools: output FAR YELLOW, NEAR Green **** Revised 8/14/21 for single build space
 	  FarYellow();
-	  NearGreen();
+	  //NearGreen();
+	  NearYellow();
     break;
 
 	case 237:		//No E-STOP, FAR SOFT tools, NEAR SOFT Tools: output FAR YELLOW, NEAR YELLOW
